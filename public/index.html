@@ -34,7 +34,7 @@
   <section class="hero">
     <p class="hero-kicker">JLPT <span>N5</span> · Kanji</p>
     <h1 class="hero-title">Belajar kanji<br>kayak main <em>mahjong</em>.</h1>
-    <p class="hero-sub">Balik kartunya, inget bacaannya, naik level. Diingetin pas pas waktunya lupa — biar nempel beneran.</p>
+    <p class="hero-sub">Ketuk kartunya buat lihat bacaan & artinya. Kanji dan kosakata dasar JLPT N5 — simpel, ketuk-ketuk aja.</p>
   </section>
 
   <section class="decks" id="deckGrid"><!-- diisi JS --></section>
@@ -54,7 +54,7 @@
     <div class="rev-count" id="revCount">0/0</div>
   </header>
 
-  <section class="stage">
+  <section class="stage" id="stageTap">
     <div class="tile-scene">
       <button class="tile" id="tile" aria-live="polite">
         <div class="tile-face tile-front">
@@ -72,33 +72,21 @@
     </div>
   </section>
 
-  <footer class="rev-actions">
-    <div class="flip-cta" id="flipCta">
-      <button class="btn-flip" id="flipBtn">Lihat jawaban</button>
-    </div>
-    <div class="grade-row" id="gradeRow" hidden>
-      <button class="grade g-again" data-g="0"><b>Lagi</b><small id="lblAgain">&lt;1m</small></button>
-      <button class="grade g-hard"  data-g="1"><b>Susah</b><small id="lblHard">1h</small></button>
-      <button class="grade g-good"  data-g="2"><b>Bagus</b><small id="lblGood">1h</small></button>
-      <button class="grade g-easy"  data-g="3"><b>Gampang</b><small id="lblEasy">4h</small></button>
-    </div>
-  </footer>
+  <footer class="rev-hint"><span id="revHint">Ketuk kartu buat lihat jawaban</span></footer>
 </main>
 
 <!-- ░░ DONE ░░ -->
 <main id="done" class="screen done">
   <div class="done-card">
-    <div class="done-emoji" id="doneEmoji">🀄</div>
-    <h2 id="doneTitle">Selesai!</h2>
-    <p id="doneSub">Sesi beres. Kanji lo makin nempel.</p>
-    <div class="done-stats" id="doneStats"></div>
+    <div class="done-emoji">🀄</div>
+    <h2 id="doneTitle">Selesai</h2>
+    <p id="doneSub">0 kartu</p>
     <button class="btn-primary" id="doneHome">Balik ke menu</button>
   </div>
 </main>
 
-<canvas id="confetti" aria-hidden="true"></canvas>
-
 <script src="/data/n5.js"></script>
+<script src="/data/n5-vocab.js"></script>
 <script src="/app.js"></script>
 </body>
 </html>

@@ -203,14 +203,21 @@ button { font-family: inherit; }
 .tile-front .tile-suit.s-yellow { color: var(--yellow-d); }
 .tile-kanji {
   font-family: var(--jp); font-weight: 900; color: var(--tile-ink);
-  font-size: clamp(96px, 34vw, 168px); line-height: 1;
+  font-size: clamp(96px, 34vw, 168px); line-height: 1.08; text-align: center;
   text-shadow: 0 1px 0 #fff, 0 2px 3px rgba(120,100,50,.18);
 }
+/* skala font sesuai panjang kata (vocab bisa 2-5 char) */
+.tile-kanji.w2 { font-size: clamp(60px, 22vw, 116px); }
+.tile-kanji.w3 { font-size: clamp(46px, 16vw, 84px); }
+.tile-kanji.w4 { font-size: clamp(36px, 12vw, 64px); }
 .tile-hint { position: absolute; bottom: 16px; font-size: .72rem; color: #b6aa86; font-weight: 600; letter-spacing: .02em; }
 
 /* Back face */
 .tile-back { transform: rotateY(180deg); justify-content: center; gap: 4px; padding: 26px 22px; }
-.tile-kanji-sm { font-family: var(--jp); font-weight: 900; color: var(--tile-ink); font-size: 52px; line-height: 1; }
+.tile-kanji-sm { font-family: var(--jp); font-weight: 900; color: var(--tile-ink); font-size: 52px; line-height: 1.1; text-align: center; }
+.tile-kanji-sm.w3 { font-size: 42px; }
+.tile-kanji-sm.w4 { font-size: 34px; }
+.vocab-reading { font-family: var(--jp); font-weight: 700; font-size: 1.5rem; color: var(--blue-d); }
 .tile-meaning { font-weight: 700; font-size: 1.35rem; color: var(--ink); margin: 6px 0 12px; text-align: center; }
 .reading-rows { display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 240px; }
 .reading-row { display: flex; align-items: center; gap: 9px; justify-content: center; }
@@ -229,35 +236,10 @@ button { font-family: inherit; }
 .tile-example .ex-r { font-family: var(--jp); color: var(--ink-2); font-size: .82rem; margin: 0 4px; }
 .tile-example .ex-m { color: var(--ink-3); font-size: .82rem; }
 
-/* ── Actions ── */
-.rev-actions { padding: 12px 0 22px; min-height: 96px; }
-.flip-cta { display: grid; }
-.btn-flip {
-  border: 0; cursor: pointer; padding: 17px; border-radius: var(--r);
-  font-weight: 700; font-size: 1.02rem; color: #fff;
-  background: linear-gradient(180deg, var(--blue), var(--blue-d));
-  box-shadow: 0 6px 0 -1px #1659c4, 0 14px 24px rgba(66,133,244,.36);
-  transition: transform .12s var(--ease), box-shadow .12s var(--ease);
-}
-.btn-flip:hover { transform: translateY(-1px); }
-.btn-flip:active { transform: translateY(4px); box-shadow: 0 2px 0 -1px #1659c4, 0 6px 12px rgba(66,133,244,.3); }
-
-.grade-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; animation: grade-in .35s var(--ease) both; }
-@keyframes grade-in { from { opacity: 0; transform: translateY(10px); } }
-.grade {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  border: 0; cursor: pointer; padding: 14px 6px 12px; border-radius: var(--r);
-  color: #fff; transition: transform .12s var(--ease), box-shadow .12s var(--ease), filter .12s;
-}
-.grade b { font-size: .98rem; font-weight: 700; }
-.grade small { font-size: .68rem; opacity: .9; font-variant-numeric: tabular-nums; }
-.grade:hover { transform: translateY(-2px); filter: brightness(1.04); }
-.grade:active { transform: translateY(3px); }
-.g-again { background: linear-gradient(180deg, var(--red), var(--red-d));     box-shadow: 0 5px 0 -1px #a01b15, 0 10px 18px rgba(234,67,53,.32); }
-.g-hard  { background: linear-gradient(180deg, var(--yellow), var(--yellow-d)); box-shadow: 0 5px 0 -1px #c97e00, 0 10px 18px rgba(251,188,5,.34); color: #5b4300; }
-.g-good  { background: linear-gradient(180deg, var(--blue), var(--blue-d));    box-shadow: 0 5px 0 -1px #1659c4, 0 10px 18px rgba(66,133,244,.32); }
-.g-easy  { background: linear-gradient(180deg, var(--green), var(--green-d));  box-shadow: 0 5px 0 -1px #14702f, 0 10px 18px rgba(52,168,83,.32); }
-.g-hard small { opacity: .8; }
+/* ── Hint (ganti grading) ── */
+.stage { cursor: pointer; }
+.rev-hint { padding: 8px 0 26px; text-align: center; min-height: 60px; }
+.rev-hint span { font-size: .9rem; color: var(--ink-3); font-weight: 500; }
 
 /* ════════════════════════ DONE ════════════════════════ */
 .done { align-items: center; justify-content: center; padding: 24px; }
