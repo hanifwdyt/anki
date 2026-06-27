@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css?v=2">
+<link rel="stylesheet" href="/styles.css?v=3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='18' y='10' width='64' height='84' rx='12' fill='%23fffdf5' stroke='%23e7e0cf' stroke-width='3'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' font-family='sans-serif' fill='%231f2937'%3E漢%3C/text%3E%3C/svg%3E">
 </head>
 <body>
@@ -38,6 +38,19 @@
   </section>
 
   <section class="decks" id="deckGrid"><!-- diisi JS --></section>
+
+  <section class="settings">
+    <label class="setting-row" for="romajiToggle">
+      <span class="setting-text">
+        <b>Tampilkan romaji</b>
+        <small>Cara baca pakai huruf latin (mis. <i>nichi</i>)</small>
+      </span>
+      <span class="switch">
+        <input type="checkbox" id="romajiToggle" checked>
+        <span class="switch-track"></span>
+      </span>
+    </label>
+  </section>
 
   <footer class="home-foot">
     <span id="resetWrap" hidden>Progress kesimpen di browser lo. <button class="link-btn" id="resetBtn">Reset</button></span>
@@ -85,8 +98,8 @@
   </div>
 </main>
 
-<script src="/data/n5.js?v=2"></script>
-<script src="/data/n5-vocab.js?v=2"></script>
-<script src="/app.js?v=2"></script>
+<script src="/data/n5.js?v=3"></script>
+<script src="/data/n5-vocab.js?v=3"></script>
+<script src="/app.js?v=3"></script>
 </body>
 </html>

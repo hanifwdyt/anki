@@ -4,6 +4,60 @@
 const $ = (s) => document.querySelector(s);
 const SEEN_KEY = 'anki.seen.v2';
 const SND_KEY = 'anki.sound';
+const ROMAJI_KEY = 'anki.romaji';
+let romajiOn = localStorage.getItem(ROMAJI_KEY) !== '0';  // default ON
+
+// ── Kana → Romaji (Hepburn) ──
+const ROMA = {
+  あ:'a',い:'i',う:'u',え:'e',お:'o',
+  か:'ka',き:'ki',く:'ku',け:'ke',こ:'ko',
+  さ:'sa',し:'shi',す:'su',せ:'se',そ:'so',
+  た:'ta',ち:'chi',つ:'tsu',て:'te',と:'to',
+  な:'na',に:'ni',ぬ:'nu',ね:'ne',の:'no',
+  は:'ha',ひ:'hi',ふ:'fu',へ:'he',ほ:'ho',
+  ま:'ma',み:'mi',む:'mu',め:'me',も:'mo',
+  や:'ya',ゆ:'yu',よ:'yo',
+  ら:'ra',り:'ri',る:'ru',れ:'re',ろ:'ro',
+  わ:'wa',ゐ:'i',ゑ:'e',を:'o',ん:'n',
+  が:'ga',ぎ:'gi',ぐ:'gu',げ:'ge',ご:'go',
+  ざ:'za',じ:'ji',ず:'zu',ぜ:'ze',ぞ:'zo',
+  だ:'da',ぢ:'ji',づ:'zu',で:'de',ど:'do',
+  ば:'ba',び:'bi',ぶ:'bu',べ:'be',ぼ:'bo',
+  ぱ:'pa',ぴ:'pi',ぷ:'pu',ぺ:'pe',ぽ:'po',
+  きゃ:'kya',きゅ:'kyu',きょ:'kyo',
+  しゃ:'sha',しゅ:'shu',しょ:'sho',
+  ちゃ:'cha',ちゅ:'chu',ちょ:'cho',
+  にゃ:'nya',にゅ:'nyu',にょ:'nyo',
+  ひゃ:'hya',ひゅ:'hyu',ひょ:'hyo',
+  みゃ:'mya',みゅ:'myu',みょ:'myo',
+  りゃ:'rya',りゅ:'ryu',りょ:'ryo',
+  ぎゃ:'gya',ぎゅ:'gyu',ぎょ:'gyo',
+  じゃ:'ja',じゅ:'ju',じょ:'jo',
+  びゃ:'bya',びゅ:'byu',びょ:'byo',
+  ぴゃ:'pya',ぴゅ:'pyu',ぴょ:'pyo',
+};
+function kanaToRomaji(input) {
+  // katakana → hiragana dulu biar satu map
+  const s = [...(input || '')].map((ch) => {
+    const c = ch.codePointAt(0);
+    return (c >= 0x30a1 && c <= 0x30f6) ? String.fromCodePoint(c - 0x60) : ch;
+  }).join('');
+  let out = '';
+  for (let i = 0; i < s.length; i++) {
+    const one = s[i], two = s.substr(i, 2);
+    if (one === 'っ') { // sokuon: gandakan konsonan berikutnya
+      const nr = ROMA[s.substr(i + 1, 2)] || ROMA[s[i + 1]] || '';
+      if (nr) out += nr.startsWith('ch') ? 't' : nr[0];
+      continue;
+    }
+    if (one === 'ー') { out += out.slice(-1) || ''; continue; } // vokal panjang
+    if (ROMA[two]) { out += ROMA[two]; i++; continue; }
+    if (ROMA[one]) { out += ROMA[one]; continue; }
+    out += one;
+  }
+  return out;
+}
+const romajiOf = (vals) => vals.map(kanaToRomaji).join(' · ');
 
 // ── Decks ──
 const DECKS = [
@@ -113,17 +167,23 @@ function renderCard() {
     $('#backMeaning').textContent = c.m;
     const addRow = (tag, cls, vals) => {
       if (!vals || !vals.length) return;
+      const vs = vals.slice(0, 3);
       const row = document.createElement('div');
       row.className = 'reading-row';
-      row.innerHTML = `<span class="reading-tag ${cls}">${tag}</span><span class="reading-val">${vals.slice(0, 3).join('・')}</span>`;
+      const roma = romajiOn ? `<span class="reading-roma">${romajiOf(vs)}</span>` : '';
+      row.innerHTML = `<span class="reading-tag ${cls}">${tag}</span><span class="reading-val">${vs.join('・')}</span>${roma}`;
       rr.appendChild(row);
     };
     addRow('on', 'on', c.on);
     addRow('kun', 'kun', c.kun);
-    if (c.ex) ex.innerHTML = `<span class="ex-w">${c.ex.w}</span><span class="ex-r">(${c.ex.r})</span><span class="ex-m">${c.ex.m}</span>`;
+    if (c.ex) {
+      const exRoma = romajiOn ? ` <span class="ex-roma">${kanaToRomaji(c.ex.r)}</span>` : '';
+      ex.innerHTML = `<span class="ex-w">${c.ex.w}</span><span class="ex-r">(${c.ex.r})</span><span class="ex-m">${c.ex.m}</span>${exRoma}`;
+    }
   } else {
-    // vocab: bacaan (kana) + arti
-    rr.innerHTML = `<div class="reading-row"><span class="vocab-reading">${c.r}</span></div>`;
+    // vocab: bacaan (kana) + romaji + arti
+    const roma = romajiOn ? `<div class="reading-row"><span class="vocab-roma">${kanaToRomaji(c.r)}</span></div>` : '';
+    rr.innerHTML = `<div class="reading-row"><span class="vocab-reading">${c.r}</span></div>${roma}`;
     $('#backMeaning').textContent = c.m;
   }
   updateProgress();
@@ -195,6 +255,10 @@ $('#soundToggle').addEventListener('click', () => {
 $('#resetBtn').addEventListener('click', () => {
   if (confirm('Reset progress (kartu yang udah dilihat)?')) { seen = {}; saveSeen(); renderHome(); }
 });
+$('#romajiToggle').addEventListener('change', (e) => {
+  romajiOn = e.target.checked;
+  localStorage.setItem(ROMAJI_KEY, romajiOn ? '1' : '0');
+});
 document.addEventListener('keydown', (e) => {
   if (!$('#review').classList.contains('is-active')) return;
   if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); tapCard(); }
@@ -202,5 +266,6 @@ document.addEventListener('keydown', (e) => {
 });
 
 // init
+$('#romajiToggle').checked = romajiOn;
 renderSoundBtn();
 renderHome();
