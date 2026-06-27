@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>あんき · anki.hanif.app — Belajar Kanji JLPT N5</title>
+<meta name="description" content="Belajar kanji JLPT N5 ala kartu mahjong. Spaced repetition yang menyenangkan — flip, ingat, naik level.">
+<meta name="theme-color" content="#f6f7f9">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='18' y='10' width='64' height='84' rx='12' fill='%23fffdf5' stroke='%23e7e0cf' stroke-width='3'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' font-family='sans-serif' fill='%231f2937'%3E漢%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- ░░ Ambient background blobs ░░ -->
+<div class="ambient" aria-hidden="true">
+  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+</div>
+
+<!-- ░░ HOME ░░ -->
+<main id="home" class="screen home is-active">
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-tile">漢</span>
+      <span class="brand-text"><b>anki</b><i>.hanif.app</i></span>
+    </a>
+    <button class="icon-btn" id="soundToggle" title="Suara" aria-label="Toggle suara">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="snd-on" d="M11 5 6 9H2v6h4l5 4V5z"/><path class="snd-on" d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>
+    </button>
+  </header>
+
+  <section class="hero">
+    <p class="hero-kicker">JLPT <span>N5</span> · Kanji</p>
+    <h1 class="hero-title">Belajar kanji<br>kayak main <em>mahjong</em>.</h1>
+    <p class="hero-sub">Balik kartunya, inget bacaannya, naik level. Diingetin pas pas waktunya lupa — biar nempel beneran.</p>
+  </section>
+
+  <section class="decks" id="deckGrid"><!-- diisi JS --></section>
+
+  <footer class="home-foot">
+    <span id="resetWrap" hidden>Progress kesimpen di browser lo. <button class="link-btn" id="resetBtn">Reset</button></span>
+  </footer>
+</main>
+
+<!-- ░░ REVIEW ░░ -->
+<main id="review" class="screen review">
+  <header class="rev-top">
+    <button class="icon-btn" id="closeReview" aria-label="Tutup sesi">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="rev-progress"><div class="rev-progress-fill" id="revFill"></div></div>
+    <div class="rev-count" id="revCount">0/0</div>
+  </header>
+
+  <section class="stage">
+    <div class="tile-scene">
+      <button class="tile" id="tile" aria-live="polite">
+        <div class="tile-face tile-front">
+          <span class="tile-suit" id="tileSuit">●</span>
+          <span class="tile-kanji" id="tileKanji">漢</span>
+          <span class="tile-hint" id="tileHint">ketuk buat balik</span>
+        </div>
+        <div class="tile-face tile-back">
+          <span class="tile-kanji-sm" id="backKanji">漢</span>
+          <span class="tile-meaning" id="backMeaning">arti</span>
+          <div class="reading-rows" id="backReadings"></div>
+          <div class="tile-example" id="backExample"></div>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <footer class="rev-actions">
+    <div class="flip-cta" id="flipCta">
+      <button class="btn-flip" id="flipBtn">Lihat jawaban</button>
+    </div>
+    <div class="grade-row" id="gradeRow" hidden>
+      <button class="grade g-again" data-g="0"><b>Lagi</b><small id="lblAgain">&lt;1m</small></button>
+      <button class="grade g-hard"  data-g="1"><b>Susah</b><small id="lblHard">1h</small></button>
+      <button class="grade g-good"  data-g="2"><b>Bagus</b><small id="lblGood">1h</small></button>
+      <button class="grade g-easy"  data-g="3"><b>Gampang</b><small id="lblEasy">4h</small></button>
+    </div>
+  </footer>
+</main>
+
+<!-- ░░ DONE ░░ -->
+<main id="done" class="screen done">
+  <div class="done-card">
+    <div class="done-emoji" id="doneEmoji">🀄</div>
+    <h2 id="doneTitle">Selesai!</h2>
+    <p id="doneSub">Sesi beres. Kanji lo makin nempel.</p>
+    <div class="done-stats" id="doneStats"></div>
+    <button class="btn-primary" id="doneHome">Balik ke menu</button>
+  </div>
+</main>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script src="/data/n5.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

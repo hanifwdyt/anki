@@ -1,0 +1,16 @@
+{
+  "name": "anki-hanif-app",
+  "version": "1.0.0",
+  "description": "anki.hanif.app — belajar kanji JLPT N5 ala kartu mahjong (SRS flashcard)",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
